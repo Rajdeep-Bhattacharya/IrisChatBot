@@ -1,11 +1,10 @@
 const { RTMClient } = require('@slack/client');
 const { WebClient } = require('@slack/client');
-// An access token (from your Slack app or custom integration - usually xoxb)
+
 
 // The client is initialized and then started to get an active connection to the platform
-
-exports.init = function slackClient(token){
-  const rtm = new RTMClient(token);
+exports.init = function slackClient(token,logLevel){
+  const rtm = new RTMClient(token,{logLevel:logLevel});
 // Need a web client to find a channel where the app can post a message
   const web = new WebClient(token);
 
@@ -27,18 +26,19 @@ web.channels.list()
     }
   });
   rtm.on('message', (message) => {
-    // For structure of `message`, see https://a
-    pi.slack.com/events/message
+    // For structure of `message`, see https://api.slack.com/events/message
   
     // Skip messages that are from a bot or my own user ID
     if ( (message.subtype && message.subtype === 'bot_message') ||
          (!message.subtype && message.user === rtm.activeUserId) ) {
       return;
     }
-  
+    console.log(`(channel:${message.channel}) `);
+    console.log(message);
     // Log the message
     console.log(`(channel:${message.channel}) ${message.user} says: ${message.text}`);
   });
+  //addAuthenticatedHandler(rtm,handleOnAuthenticated);
   return rtm;
 };
 
