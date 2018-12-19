@@ -1,12 +1,9 @@
 'use strict'
-
+require('dotenv').config();
 const service = require('../server/service');
+const slackClient = require('../server/slackCient');
 require('dotenv').load();
-var http = require('http');
-const server = http.createServer(service);
-server.listen(3000);
+const token = process.env.bot_user_auth_access_token;
 
-server.on('listening', function () {
-    console.log(`iris is listening on ${server.address().port} in ${service.get('env')} mode`)
-   
-});
+const rtm = slackClient.init(token);
+rtm.start();
