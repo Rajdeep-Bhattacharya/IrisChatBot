@@ -27,7 +27,8 @@ web.channels.list()
     }
   });
   rtm.on('message', (message) => {
-    // For structure of `message`, see https://api.slack.com/events/message
+    // For structure of `message`, see https://a
+    pi.slack.com/events/message
   
     // Skip messages that are from a bot or my own user ID
     if ( (message.subtype && message.subtype === 'bot_message') ||
