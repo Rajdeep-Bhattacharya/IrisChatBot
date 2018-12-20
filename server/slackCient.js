@@ -39,7 +39,7 @@ function messageHandler(message) {
         }
         const intent = require('./intents/' + res.intent[0].value + 'Intent');
         intent.process(res, function (error, response) {
-          if (error) {
+          if (error  || response.statusCode!==200 || !response.body.result) {
             console.log(error.message);
             return;
           }
@@ -57,7 +57,7 @@ function messageHandler(message) {
   }
 }
 
-
+exports.addAuthenticatedHandler = addAuthenticatedHandler;
 
 // The client is initialized and then started to get an active connection to the platform
 exports.init = function slackClient(token, witClient) {
@@ -65,7 +65,7 @@ exports.init = function slackClient(token, witClient) {
   // Need a web client to find a channel where the app can post a message
   const web = new WebClient(token);
   nlp = witClient;
-  exports.addAuthenticatedHandler = addAuthenticatedHandler;
+  
   let channel = {};
 
   // Load the current channels list asynchrously
