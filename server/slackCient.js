@@ -8,6 +8,13 @@ function handleOnAuthenticated(rtmStartData) {
 function addAuthenticatedHandler(rtm, handler) {
   rtm.on('authenticated', handler);
 }
+function sendMessage(rtm, channel, message) {
+  rtm.sendMessage(message, channel)
+    // Returns a promise that resolves when the message is sent
+    .then((msg) => console.log(`Message sent to channel ${channel} with ts:${msg.ts}`))
+    .catch(console.error);
+}
+
 
 // The client is initialized and then started to get an active connection to the platform
 exports.init = function slackClient(token) {
@@ -16,21 +23,16 @@ exports.init = function slackClient(token) {
   const web = new WebClient(token);
   let nlp = null;
   exports.addAuthenticatedHandler = addAuthenticatedHandler;
-
+  let channel = {};
 
   // Load the current channels list asynchrously
   web.channels.list()
     .then((res) => {
-      // Take any channel for which the bot is a member
-      const channel = res.channels.find(c => c.is_member);
-
+      // Take any channel for which the bot is a member.... may send to all channels the bot is added to remove later
+      channel = res.channels.find(c => c.is_member);
       if (channel) {
-        // We now have a channel ID to post a message in!
         // use the `sendMessage()` method to send a simple string to a channel using the channel ID
-        rtm.sendMessage('Hello, world!', channel.id)
-          // Returns a promise that resolves when the message is sent
-          .then((msg) => console.log(`Message sent to channel ${channel.name} with ts:${msg.ts}`))
-          .catch(console.error);
+        sendMessage(rtm, channel.id, "Hello, World!");
       } else {
         console.log('This bot does not belong to any channel, invite it to at least one and try again');
       }
@@ -43,10 +45,12 @@ exports.init = function slackClient(token) {
       (!message.subtype && message.user === rtm.activeUserId)) {
       return;
     }
+    sendMessage(rtm, message.channel, "This is a test message!");
     console.log(`(channel:${message.channel}) `);
     console.log(message);
     // Log the message
     console.log(`(channel:${message.channel}) ${message.user} says: ${message.text}`);
+
   });
   addAuthenticatedHandler(rtm, handleOnAuthenticated);
   return rtm;
