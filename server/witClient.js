@@ -1,23 +1,32 @@
 'use strict'
 const request = require('request');
+function handleWitResponse(res) {
+
+    return res.entities;
+}
 
 module.exports = function witCLient(token) {
-
-   // make http call to wit.ai and receive a json with parsed data
-    const ask = function ask(message) {
-        request('https://api.wit.ai/message?v=20181220&q='+message, {
+    
+    // make http call to wit.ai and receive a json with parsed data
+    const ask = function ask(message, callback) {
+        request('https://api.wit.ai/message?v=20181220&q=' + message, {
             method: "GET",
             headers: {
                 Authorization: 'Bearer ' + token,
+                'Content-Type': 'application/json'
             }
-          }, function (error, response, body) {
-              if (!error && response.statusCode == 200) {
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                body = JSON.parse(body);
                 console.log('body:', body);
-              } else {
+                let witResponse = handleWitResponse(body);
+                return callback(null, witResponse);
 
+            } else {
                 console.log('error', error, response && response.statusCode);
-              }
-          });
+                return callback(error);
+            }
+        });
 
 
 
