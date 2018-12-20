@@ -1,6 +1,6 @@
 const { RTMClient } = require('@slack/client');
 const { WebClient } = require('@slack/client');
-
+let nlp=null;
 function handleOnAuthenticated(rtmStartData) {
   console.log(`logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}`);
 }
@@ -9,6 +9,7 @@ function addAuthenticatedHandler(rtm, handler) {
   rtm.on('authenticated', handler);
 }
 function sendMessage(rtm, channel, message) {
+  
   rtm.sendMessage(message, channel)
     // Returns a promise that resolves when the message is sent
     .then((msg) => console.log(`Message sent to channel ${channel} with ts:${msg.ts}`))
@@ -17,11 +18,11 @@ function sendMessage(rtm, channel, message) {
 
 
 // The client is initialized and then started to get an active connection to the platform
-exports.init = function slackClient(token) {
+exports.init = function slackClient(token,witClient) {
   const rtm = new RTMClient(token);
   // Need a web client to find a channel where the app can post a message
   const web = new WebClient(token);
-  let nlp = null;
+  nlp = witClient;
   exports.addAuthenticatedHandler = addAuthenticatedHandler;
   let channel = {};
 
@@ -45,6 +46,7 @@ exports.init = function slackClient(token) {
       (!message.subtype && message.user === rtm.activeUserId)) {
       return;
     }
+    nlp.ask(message.text);
     sendMessage(rtm, message.channel, "This is a test message!");
     console.log(`(channel:${message.channel}) `);
     console.log(message);
