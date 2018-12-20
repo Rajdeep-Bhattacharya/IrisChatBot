@@ -39,17 +39,19 @@ function messageHandler(message) {
         }
         const intent = require('./intents/' + res.intent[0].value + 'Intent');
         intent.process(res, function (error, response) {
-          if (error  || response.statusCode!==200 || !response.body.result) {
-            console.log(error.message);
+          if (error) {
+            console.log("inside error"+error.message);
             return;
           }
+         /*  console.log("response insde slack client");
+          console.log(response); */
           return sendMessage(response, message.channel);
         });
       }
       catch (err) {
         console.log(err);
         console.log(res);
-        return rtm.sendMessage("Sorry, I don't know what you are talking about");
+        return sendMessage("Sorry, I don't know what you are talking about",message.channel);
       }
 
 

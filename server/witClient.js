@@ -6,7 +6,7 @@ function handleWitResponse(res) {
 }
 
 module.exports = function witCLient(token) {
-    
+
     // make http call to wit.ai and receive a json with parsed data
     const ask = function ask(message, callback) {
         request('https://api.wit.ai/message?v=20181220&q=' + message, {
@@ -17,8 +17,8 @@ module.exports = function witCLient(token) {
             }
         }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                
-                console.log('body:', body);
+
+                //console.log('body:', body);
                 body = JSON.parse(body);
                 let witResponse = handleWitResponse(body);
                 return callback(null, witResponse);
@@ -28,9 +28,6 @@ module.exports = function witCLient(token) {
                 return callback(error);
             }
         });
-
-
-
         console.log(`ask:` + message);
         console.log(`token:` + token);
     }
