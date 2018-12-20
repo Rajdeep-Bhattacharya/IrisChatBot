@@ -8,12 +8,12 @@ require('dotenv').load();
 
 
 
-
+const wit_token = process.env.wit_token;
 const token = process.env.bot_user_auth_access_token;
 //const logLevel = 'debug';
 const rtm = slackClient.init(token);
 rtm.start();
-
+const witClient = require('../server/witClient')(wit_token);
 const port = process.env.server_port;
 //start express only after connecting to channel
 slackClient.addAuthenticatedHandler(rtm,()=>server.listen(port));
