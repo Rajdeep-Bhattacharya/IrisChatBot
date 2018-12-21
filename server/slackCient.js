@@ -2,6 +2,7 @@ const { RTMClient } = require('@slack/client');
 const { WebClient } = require('@slack/client');
 let nlp = null;
 let rtm = null;
+let service = null;
 function handleOnAuthenticated(rtmStartData) {
   console.log(`logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}`);
 }
@@ -39,7 +40,7 @@ function messageHandler(message) {
         }
         //console.log(res);
         const intent = require('./intents/' + res.intent[0].value + 'Intent');
-        intent.process(res, function (error, response) {
+        intent.process(res,service, function (error, response) {
           if (error) {
             console.log("inside error"+error.message);
             return;
@@ -63,12 +64,12 @@ function messageHandler(message) {
 exports.addAuthenticatedHandler = addAuthenticatedHandler;
 
 // The client is initialized and then started to get an active connection to the platform
-exports.init = function slackClient(token, witClient) {
+exports.init = function slackClient(token, witClient,serviceRegistry) {
   rtm = new RTMClient(token);
   // Need a web client to find a channel where the app can post a message
   const web = new WebClient(token);
   nlp = witClient;
-  
+  service = serviceRegistry;
   let channel = {};
 
   // Load the current channels list asynchrously

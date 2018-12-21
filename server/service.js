@@ -5,7 +5,7 @@ const service = express();
 const serviceRegistry = require('./serviceRegistry');
 //create object of serviceRegistry
 const serviceRegistryObj = new serviceRegistry();
-
+service.set('serviceRegistry',serviceRegistryObj);
 
 service.put('/service/:intent/:port',(req,res,next)=>{
         const serviceIntent = req.params.intent;

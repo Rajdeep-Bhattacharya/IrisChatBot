@@ -3,7 +3,7 @@ const request = require('request');
 
 const weather_api_server_port =3001;
 
-module.exports.process = function process(intentData,callback){
+module.exports.process = function process(intentData,serviceRegistry,callback){
 
     if(intentData.intent[0].value!=='weather'){
         return callback(new Error(`Expected weather intent, got ${intentData.intent[0].value}`));
@@ -12,12 +12,12 @@ module.exports.process = function process(intentData,callback){
         return callback(new Error(`missing location in weather intent`));
     }
     const location = intentData.location[0].value;
-    const lat = intentData.location[0].resolved.values[0].coords.lat;
-    const long = intentData.location[0].resolved.values[0].coords.long;
    /*  if(lat || long)
         console.log(`lat: ${lat} and long: ${long}`);
      */
-    request(`http://localhost:`+weather_api_server_port +`/service/${location}`, {
+    const service = serviceRegistry.service['weather'];
+    if(!service) return callback(false,'No weather service available');
+    request(`http://${service.ip}:${service.port}/service/${location}`, {
         method: "GET"
     }, function (error, response, body) {
        if(error)

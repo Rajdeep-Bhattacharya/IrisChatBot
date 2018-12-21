@@ -8,7 +8,8 @@ class serviceRegistry{
 
     //add service to hashmap service
     addService(intent,ip,port){
-        const key = intent+ip+port;
+        //key should be unique for each service 
+        const key = intent;
         if(!this.service[key]){
             this.service[key]={};
             this.service[key].timestamp = Math.floor(new Date()/1000);
@@ -20,7 +21,8 @@ class serviceRegistry{
         }
         this.service[key].timestamp = Math.floor(new Date()/1000);
         this.cleanUp();
-        console.log(`updating the intent : ${intent} ip:${ip}`);
+        //console.log(this.service);
+        //console.log(`updating the intent : ${intent} ip:${ip}`);
     }
     //delete service to hashmap service
     removeService(intent,ip,port){

@@ -6,13 +6,13 @@ const slackClient = require('../server/slackCient');
 const server = http.createServer(service);
 require('dotenv').load();
 
-
+const serviceRegistry = service.get('serviceRegistry');
 
 const wit_token = process.env.wit_server_access_token;
 const token = process.env.bot_user_auth_access_token;
 //const logLevel = 'debug';
 const witClient = require('../server/witClient')(wit_token);
-const rtm = slackClient.init(token,witClient);
+const rtm = slackClient.init(token,witClient,serviceRegistry);
 rtm.start();
 
 const port = process.env.server_port;
