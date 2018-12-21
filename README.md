@@ -1,4 +1,4 @@
-# IrisChatBot
+# ![alt text](iris.png) IrisChatBot
 Node js based chat bot that connects to slack and uses wit.ai NLP preocessing to respond to messages,
 acts as a tutorial to microservices  architecture.
 
