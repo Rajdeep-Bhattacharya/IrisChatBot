@@ -9,4 +9,5 @@ currently two microservices are implemented : time------uses google maps timezon
                                               
 TODO:
 add authentication to add bot to multiple channels easily
-add more services, maybe reporterservice similar to 
+add more services, maybe reporterservice similar to https://cdn.scotch.io/58448/QqfiCY2zRkuqn8BROVxV_demo.gif
+bot needs to train better and handle more cases
