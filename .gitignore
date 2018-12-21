@@ -1,3 +1,7 @@
 .env
 node_modules
 wit_command.txt
+services/Iris-Time/node_modules
+services/Iris-Weather/node_modules
+services/Iris-Time/.env
+services/Iris-Weather/.env
