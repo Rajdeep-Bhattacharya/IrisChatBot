@@ -37,6 +37,7 @@ function messageHandler(message) {
         if (!res.intent || !res.intent[0] || !res.intent[0].value) {
           throw new Error("Could not extract intent.");
         }
+        console.log(res);
         const intent = require('./intents/' + res.intent[0].value + 'Intent');
         intent.process(res, function (error, response) {
           if (error) {
