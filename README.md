@@ -16,3 +16,6 @@ two microservices are implemented :
 
 ### Demo
 ![](demo.gif)
+
+### How to Install:
+// todo
