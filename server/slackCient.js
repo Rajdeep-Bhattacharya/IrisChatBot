@@ -28,6 +28,7 @@ function messageHandler(message) {
     (!message.subtype && message.user === rtm.activeUserId)) {
     return;
   }
+  //must include in the question to answer
   if (message.text.toLowerCase().includes('iris')) {
     nlp.ask(message.text, (err, res) => {
       if (err) {
